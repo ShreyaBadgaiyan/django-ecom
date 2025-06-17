@@ -5,15 +5,58 @@
 <div class="container my-5">
  <div class="row">
   <div class="col-sm-6 text-center align-self-center">
-   <img src="{% static 'app/images/product/1.jpg' %}" alt="" class="img-fluid img-thumbnail">
+   <img src="{{product.product_image.url}}" alt="" class="img-fluid img-thumbnail">
   </div>
   <div class="col-sm-5 offset-sm-1">
-   <h2>Product Title: Product 1</h2>
+   <h2>{{product.title}}</h2>
    <hr>
-   <p>Product Description: Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, at. Dignissimos rerum incidunt temporibus laudantium. Rem, eveniet corporis. Itaque delectus quae nesciunt nemo, maiores minus deserunt vel. Vero, nulla quisquam!</p> <br>
-   <h4>Rs. 13999 <small class="fw-light text-decoration-line-through">15999</small></h4> <br>
-   <a href="{% url 'add-to-cart' %}" class="btn btn-primary shadow px-5 py-2">Add to Cart</a>
-   <a href="{% url 'buy-now' %}" class="btn btn-danger shadow px-5 py-2 ms-4">Buy Now</a>
+   <p>{{product.description}}</p> <br>
+   <h4>{{product.discounted_price}}<small class="fw-light text-decoration-line-through">{{product.selling_price}}</small></h4> <br>
+   {% comment %} {% if request.user.is_authenticated %}
+{% if item_already_in_cart %}
+<a href="{% url 'showcart' %}" class="btn btn-warning shadow px-5 py-2 ms-3">Go to Cart</a>
+{% else %}
+
+   <form action="{% url 'add-to-cart' %}" class="d-inline" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="prod_id" value="{{ product.id }}" id="prod_id">
+    <button type="submit" class="btn btn-primary shadow px-5 py-2">Add to Cart</button> </form>
+    {% endif %}
+    {% endif %}
+
+  {% if not request.user.is_authenticated %}
+     <form action="{% url 'add-to-cart' %}" class="d-inline" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="prod_id" value="{{ product.id }}" id="prod_id">
+    <button type="submit" class="btn btn-primary shadow px-5 py-2">Add to Cart</button> </form>
+{% endif %}
+    <a href="{% url 'showcart' %}" class="btn btn-danger shadow px-5 py-2 ms-4">Buy Now</a> {% endcomment %}
+
+    {% if request.user.is_authenticated %}
+  {% if item_already_in_cart %}
+    <a href="{% url 'showcart' %}" class="btn btn-warning shadow px-5 py-2 ms-3">Go to Cart</a>
+  {% else %}
+    <form action="{% url 'add-to-cart' %}" method="POST" class="d-inline">
+      {% csrf_token %}
+      <input type="hidden" name="prod_id" value="{{ product.id }}">
+      <button type="submit" class="btn btn-primary shadow px-5 py-2">Add to Cart</button>
+    </form>
+  {% endif %}
+  <a href="{% url 'buy-now' %}" class="btn btn-danger shadow px-5 py-2 ms-4">Buy Now</a>
+
+{% else %}
+  <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary shadow px-5 py-2">Add to Cart</a>
+  <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-danger shadow px-5 py-2 ms-4">Buy Now</a>
+{% endif %}
+
+
+</form>
+
+  
+   {% comment %} <a href="{% url 'add-to-cart' %}" class="btn btn-primary shadow px-5 py-2">Add to Cart</a> {% endcomment %}
+
+   {% comment %} <button type="submit" class="btn btn-primary shadow px-5 py-2">Add to Cart</button>
+   <a href="{% url 'buy-now' %}" class="btn btn-danger shadow px-5 py-2 ms-4">Buy Now</a> {% endcomment %}
    <h5 class="mt-5">Available Offers</h5>
    <ul>
     <li>Bank Offer 5% Unlimited Cashback on Flipkart Axis Bank Credit</li>
@@ -24,4 +67,4 @@
   </div>
  </div>
 </div>
-{% endblock main-content %}
+{% endblock  %}

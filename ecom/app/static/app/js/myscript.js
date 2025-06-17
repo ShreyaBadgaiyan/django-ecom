@@ -21,3 +21,71 @@ $('#slider1, #slider2, #slider3').owlCarousel({
         }
     }
 })
+
+$('.plus-cart').click(function(){
+    var id=$(this).attr("pid").toString();
+    var eml=this.parentNode.children[2]
+        // console.log("Clicked + for product ID:", id);
+    $.ajax({
+        type:"GET",
+        url:"/pluscart/",
+        data:{
+            prod_id:id
+        },
+        success:function(data){
+            eml.innerText=data.quantity
+            document.getElementById("amount").innerText=data.amount
+            document.getElementById("totalamount").innerText=data.totalamount
+
+            // console.log(data)
+            // console.log("Success")
+        }
+    })
+
+})
+
+
+$('.minus-cart').click(function(){
+    var id=$(this).attr("pid").toString();
+    var eml=this.parentNode.children[2]
+        // console.log("Clicked + for product ID:", id);
+    $.ajax({
+        type:"GET",
+        url:"/minuscart/",
+        data:{
+            prod_id:id
+        },
+        success:function(data){
+            eml.innerText=data.quantity
+            document.getElementById("amount").innerText=data.amount
+            document.getElementById("totalamount").innerText=data.totalamount
+
+            // console.log(data)
+            // console.log("Success")
+        }
+    })
+
+})
+
+$('.remove-cart').click(function(){
+    var id=$(this).attr("pid").toString();
+    var eml=this
+        // console.log("Clicked + for product ID:", id);
+    $.ajax({
+        type:"GET",
+        url:"/removecart/",
+        data:{
+            prod_id:id
+        },
+        success:function(data){
+            // eml.innerText=data.quantity
+            document.getElementById("amount").innerText=data.amount
+            document.getElementById("totalamount").innerText=data.totalamount
+
+            // console.log(data)
+            // console.log("Success")
+            eml.parentNode.parentNode.parentNode.parentNode.remove()
+        }
+    })
+
+})

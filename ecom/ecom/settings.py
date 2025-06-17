@@ -123,3 +123,13 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+MEDIA_URL='/media/'
+MEDIA_ROOT=BASE_DIR / 'media'
+# LOGIN_URL = '/account/login/'
+# before it was account/profile, now it is /profile/
+# LOGIN_REDIRECT_URL='/profile/'
+# instead of user email the email password reset link will be sent to the console
+EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
+LOGIN_URL = '/accounts/login/'  # or your actual login URL
+LOGIN_REDIRECT_URL = '/'  # or where you want to send them after login
